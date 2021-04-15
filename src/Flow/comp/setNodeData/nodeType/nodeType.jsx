@@ -6,6 +6,7 @@ import "./style.css";
 import typeArr from "../public/directyMap";
 
 const NodeType = ({ data, parentNode = {} }) => {
+  console.log("..parentNode...", parentNode);
   const { iType, onChangeFlowData } = useContext(Context);
 
   const [visible, setVisible] = useState(false);

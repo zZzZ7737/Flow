@@ -11,7 +11,7 @@ const SingleNode = ({
   data,
   prev,
   parentNode,
-  onChangeFlowData,
+  // onChangeFlowData,
   // onRemoveNode,
   iType,
 }) => {
@@ -22,9 +22,9 @@ const SingleNode = ({
     setMouseIsHover(value);
   };
 
-  const createNodeOrBranches = (nodeType) => {
-    onChangeFlowData(data, nodeType, parentNode);
-  };
+  // const createNodeOrBranches = (nodeType) => {
+  //   onChangeFlowData(data, nodeType, parentNode);
+  // };
 
   const remove = (e, nodeType) => {
     e.stopPropagation();
@@ -130,13 +130,7 @@ const SingleNode = ({
         )}
       </div>
       <div className="nodeAddWrap">
-        <NodeType
-          data={data}
-          nodeTypeCallback={createNodeOrBranches}
-          parentNode={parentNode}
-          addBtnType="singleNode"
-          iType={iType}
-        />
+        <NodeType data={data} parentNode={parentNode} addBtnType="singleNode" />
       </div>
     </div>
   );

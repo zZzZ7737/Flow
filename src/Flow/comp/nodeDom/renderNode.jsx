@@ -9,7 +9,7 @@ import NodeType from "../setNodeData/nodeType/nodeType";
 import randomNumber from "../../randomNumber/randomNumber";
 
 const RenderNode = () => {
-  const { sourceData, onChangeFlowData } = useContext(Context);
+  const { sourceData } = useContext(Context);
   const [, forceUpdate] = useReducer((v) => !v, true);
 
   const addCondition = (node) => {
@@ -79,6 +79,7 @@ const RenderNode = () => {
                   } else if (key === node.branches.length - 1) {
                     branchIndex = "1";
                   }
+
                   return (
                     <div className="branch f-pr" key={child.markingId}>
                       <BranchNode
@@ -97,9 +98,7 @@ const RenderNode = () => {
               <div className="nodeAddWrap">
                 <NodeType
                   data={node}
-                  nodeTypeCallback={(v) => {
-                    onChangeFlowData(node, v, parentNode);
-                  }}
+                  parentNode={parentNode}
                   addBtnType="branchNode"
                 />
               </div>

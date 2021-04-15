@@ -6,24 +6,12 @@ import Context from "../../Context";
 import NodeType from "../setNodeData/nodeType/nodeType";
 import "./style.css";
 
-const BranchNode = ({
-  data,
-  index,
-  i,
-  branchData,
-  conditionNodeDrawer,
-  prev,
-}) => {
+const BranchNode = ({ data, index, i, branchData, prev }) => {
   const { onRemoveNode, conditionDrawerChange } = useContext(Context);
   const [mouseIsHover, setMouseIsHover] = useState(false);
 
   const mouseEnter = (value) => {
     setMouseIsHover(value);
-  };
-
-  const conditionNodeDrawers = (e) => {
-    e.stopPropagation();
-    conditionNodeDrawer(true, data, prev, branchData);
   };
 
   // 删除节点
@@ -127,7 +115,11 @@ const BranchNode = ({
             )}
           </div>
           <div className="nodeAddWrap">
-            <NodeType data={data} addBtnType="branchNode" />
+            <NodeType
+              data={data}
+              parentNode={branchData}
+              addBtnType="branchNode"
+            />
           </div>
         </div>
       </div>
