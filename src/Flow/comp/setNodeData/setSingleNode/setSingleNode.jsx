@@ -1,14 +1,68 @@
 import { useContext } from "react";
-import { Drawer, Form, Button, Input, message } from "antd";
+import { Drawer, Select, Form, Button, Input } from "antd";
 import Context from "../../../Context";
-// import classnames from "classnames";
-// import { trim } from "@/publicMethod/tool";
-// import ChooseBox from "@/components/choosePeople";
-// import getPinyin from "@/components/relationShips/pinyin";
 import "../style.css";
 
-const SetSingleNode = () => {
-  const { singleDrawerVisible, singleDrawerChange } = useContext(Context);
+const { Option } = Select;
+
+const layout = {
+  labelCol: {
+    span: 5,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+
+const SetSingleNode = ({ nodeInfo }) => {
+  console.log("nodeInfo...", nodeInfo);
+  const {
+    singleDrawerVisible,
+    singleDrawerChange,
+    onChangeNodeInfo,
+  } = useContext(Context);
+
+  const [form] = Form.useForm();
+
+  const onGenderChange = (value) => {
+    // eslint-disable-next-line default-case
+    switch (value) {
+      case "male":
+        form.setFieldsValue({
+          note: "Hi, man!",
+        });
+        return;
+
+      case "female":
+        form.setFieldsValue({
+          note: "Hi, lady!",
+        });
+        return;
+
+      case "other":
+        form.setFieldsValue({
+          note: "Hi there!",
+        });
+    }
+  };
+
+  const onFinish = (values) => {
+    onChangeNodeInfo(
+      {
+        ...nodeInfo,
+        nodeInfo: {
+          type: "1",
+          name: values.name,
+          approvalVal: values.approvalValue,
+        },
+      },
+      "single"
+    );
+  };
+
+  const close = () => {
+    singleDrawerChange(false, {});
+  };
 
   return (
     <Drawer
@@ -19,7 +73,32 @@ const SetSingleNode = () => {
       }}
       visible={singleDrawerVisible}
       destroyOnClose
-    ></Drawer>
+    >
+      <Form {...layout} form={form} onFinish={onFinish}>
+        <Form.Item name="name" label="审批人">
+          <Input placeholder="请输入" />
+        </Form.Item>
+        <Form.Item name="approvalValue" label="审批值">
+          <Select placeholder="请选择" onChange={onGenderChange} allowClear>
+            <Option value="审批人一">审批人一</Option>
+            <Option value="审批人二">审批人二</Option>
+            <Option value="审批人三">审批人三</Option>
+          </Select>
+        </Form.Item>
+        <div className="singleFooter">
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ marginRight: "8px" }}
+          >
+            确定
+          </Button>
+          <Button htmlType="button" onClick={close}>
+            取消
+          </Button>
+        </div>
+      </Form>
+    </Drawer>
   );
 };
 

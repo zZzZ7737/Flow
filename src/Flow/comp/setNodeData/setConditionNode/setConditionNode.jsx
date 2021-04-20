@@ -20,8 +20,6 @@ const { Option } = Select;
 const ConditionForm = () => {
   const { conditionDrawerVisible, conditionDrawerChange } = useContext(Context);
 
-  console.log(conditionDrawerVisible);
-
   return (
     <Drawer
       width={500}

@@ -41,6 +41,10 @@ const Flow = () => {
   const [, forceUpdate] = useReducer((v) => !v, true);
   const [singleDrawerVisible, setVisible] = useState(false);
   const [conditionDrawerVisible, setCVisible] = useState(false);
+  const [curOperateSingleInfo, setCurOperateSingleInfo] = useState({});
+  const [prevNode, setPrevNode] = useState({});
+  const [curOperateConditionInfo, setCurOperateConditionInfo] = useState({});
+  const [branchData, setBranchData] = useState({});
 
   // 新增节点
   const onChangeFlowData = useCallback((node, nodeType, parentNode) => {
@@ -134,14 +138,65 @@ const Flow = () => {
     }
   }, []);
 
-  const singleDrawerChange = useCallback((v) => {
+  const singleDrawerChange = useCallback((v, nodeData, prev) => {
+    console.log(nodeData, prev);
     setVisible(v);
+    setCurOperateSingleInfo(nodeData);
+    setPrevNode(prev);
   }, []);
 
   const conditionDrawerChange = useCallback((v) => {
-    console.log(v);
     setCVisible(v);
   }, []);
+
+  const onChangeNodeInfo = useCallback(
+    (data, nodeType, string) => {
+      if (nodeType === "single") {
+        prevNode.next.nodeInfo = data.nodeInfo;
+        singleDrawerChange(false, {});
+        setCurOperateSingleInfo({});
+      } else {
+        // const changepriorityConditionNode = data
+        // branches[当前节点优先级-1]
+        // 获取操作节点的优先级
+        const priorityLevel = data.nodeInfo.condition.priority;
+
+        // 把正在操作的node从原来的数组中过滤掉
+        const notCurConditionNodeMap = branchData.branches.filter((item) => {
+          return item.markingId !== data.markingId;
+        });
+
+        // 把正在操作的node插入到过滤过的数组中，通过index找到插入的位置
+        notCurConditionNodeMap.splice(priorityLevel - 1, 0, data);
+
+        // 对新的数组的优先级字段进行排序
+        notCurConditionNodeMap.forEach((item, key) => {
+          const { nodeInfo } = item;
+          nodeInfo.condition.priority = key + 1;
+        });
+
+        const branchObj = {
+          ...branchData,
+          branches: notCurConditionNodeMap,
+        };
+        prevNode.next = branchObj;
+
+        // 更新flowData 实现节点按优先级顺序排序
+        if (prevNode.type === "start") {
+          setSourceData(prevNode);
+        } else {
+          forceUpdate();
+        }
+        singleDrawerChange(false, {});
+      }
+
+      setCurOperateSingleInfo({});
+      setPrevNode({});
+      setCurOperateConditionInfo({});
+      setBranchData({});
+    },
+    [branchData, prevNode, singleDrawerChange]
+  );
 
   const contextValues = useMemo(
     () => ({
@@ -153,6 +208,7 @@ const Flow = () => {
       singleDrawerChange,
       conditionDrawerVisible,
       conditionDrawerChange,
+      onChangeNodeInfo,
     }),
     [
       iType,
@@ -163,6 +219,7 @@ const Flow = () => {
       singleDrawerChange,
       conditionDrawerVisible,
       conditionDrawerChange,
+      onChangeNodeInfo,
     ]
   );
 
@@ -186,15 +243,15 @@ const Flow = () => {
         </div>
       </div>
       <SetSingleNode
-      // visible={singleNodeDrawer}
-      // onClose={this.singleNodeDrawer}
-      // node={curOperateSingleInfo}
-      // compRoleData={compRoleData}
-      // compApprovalData={compApprovalData}
-      // dutyList={dutyList}
-      // getChooseApprvalData={this.getChooseApprvalData}
-      // getChooseRoleData={this.getChooseRoleData}
-      // onChangeNodeInfo={this.onChangeNodeInfo}
+        // visible={singleNodeDrawer}
+        // onClose={this.singleNodeDrawer}
+        nodeInfo={curOperateSingleInfo}
+        // compRoleData={compRoleData}
+        // compApprovalData={compApprovalData}
+        // dutyList={dutyList}
+        // getChooseApprvalData={this.getChooseApprvalData}
+        // getChooseRoleData={this.getChooseRoleData}
+        // onChangeNodeInfo={this.onChangeNodeInfo}
       />
       <Condition
       // visible={conditionNodeDrawer}

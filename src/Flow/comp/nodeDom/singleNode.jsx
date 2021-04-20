@@ -22,10 +22,6 @@ const SingleNode = ({
     setMouseIsHover(value);
   };
 
-  // const createNodeOrBranches = (nodeType) => {
-  //   onChangeFlowData(data, nodeType, parentNode);
-  // };
-
   const remove = (e, nodeType) => {
     e.stopPropagation();
     onRemoveNode(data, prev, nodeType);
@@ -54,7 +50,7 @@ const SingleNode = ({
   }
 
   const {
-    nodeInfo: { itemApprovalList, name = defaultTitleText },
+    nodeInfo: { approvalVal, name = defaultTitleText },
   } = data;
 
   return (
@@ -68,7 +64,7 @@ const SingleNode = ({
           mouseEnter(false);
         }}
         onClick={() => {
-          singleDrawerChange(true);
+          singleDrawerChange(true, data, prev);
         }}
       >
         <div className={`title f-pr f-clearfix ${titleBg}`}>
@@ -85,36 +81,18 @@ const SingleNode = ({
             </i>
           )}
         </div>
-        {itemApprovalList && itemApprovalList.length > 0 ? (
-          <Tooltip
-            placement="rightTop"
-            title={
-              <>
-                {itemApprovalList.map((i, k) => {
-                  return k !== itemApprovalList.length - 1
-                    ? `${i.name}，`
-                    : i.name;
-                })}
-              </>
-            }
-          >
-            <div className="nodeContentPeople f-clearfix">
-              <em
-                className="nodeContentPeopleText f-fl f-ellipsis"
-                style={{ color: "#333" }}
-              >
-                {itemApprovalList.map((i, k) => {
-                  if (k !== itemApprovalList.length - 1) {
-                    return <span key={i.id}>{i.name},</span>;
-                  }
-                  return <span key={i.id}>{i.name}</span>;
-                })}
-              </em>
-              <i className="f-fl nodeContentIcon iconfont">
-                <RightOutlined />
-              </i>
-            </div>
-          </Tooltip>
+        {approvalVal ? (
+          <div className="nodeContentPeople f-clearfix">
+            <em
+              className="nodeContentPeopleText f-fl f-ellipsis"
+              style={{ color: "#333" }}
+            >
+              {approvalVal}
+            </em>
+            <i className="f-fl nodeContentIcon iconfont">
+              <RightOutlined />
+            </i>
+          </div>
         ) : (
           <div className="nodeContentPeople oa-clearfix ">
             <em
