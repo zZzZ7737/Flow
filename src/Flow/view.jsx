@@ -139,7 +139,6 @@ const Flow = () => {
   }, []);
 
   const singleDrawerChange = useCallback((v, nodeData, prev) => {
-    console.log(nodeData, prev);
     setVisible(v);
     setCurOperateSingleInfo(nodeData);
     setPrevNode(prev);
