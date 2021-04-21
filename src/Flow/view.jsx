@@ -245,7 +245,7 @@ const Flow = () => {
       <SetSingleNode
         // visible={singleNodeDrawer}
         // onClose={this.singleNodeDrawer}
-        nodeInfo={curOperateSingleInfo}
+        nodeData={curOperateSingleInfo}
         // compRoleData={compRoleData}
         // compApprovalData={compApprovalData}
         // dutyList={dutyList}
