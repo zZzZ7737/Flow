@@ -21,8 +21,7 @@ const RenderNode = () => {
         type: "2",
         condition: {
           conditionName: "",
-          conditionType: 0,
-          explicitExpression: [],
+          conditionVal: "",
           priority: node.branches.length + 1,
         },
       },

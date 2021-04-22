@@ -1,6 +1,6 @@
 function step(node, runtimeState, callback, loopBreaker) {
   switch (node.type) {
-    case 'start': {
+    case "start": {
       callback(node, runtimeState, loopBreaker.break);
 
       if (loopBreaker.shouldBreak) {
@@ -16,14 +16,18 @@ function step(node, runtimeState, callback, loopBreaker) {
             prev: node,
           },
           callback,
-          loopBreaker,
+          loopBreaker
         );
       }
       break;
     }
 
-    case 'single': {
-      callback(node, { ...runtimeState, isBranchLastNode: !node.next }, loopBreaker.break);
+    case "single": {
+      callback(
+        node,
+        { ...runtimeState, isBranchLastNode: !node.next },
+        loopBreaker.break
+      );
 
       if (loopBreaker.shouldBreak) {
         return;
@@ -38,13 +42,13 @@ function step(node, runtimeState, callback, loopBreaker) {
             prev: node,
           },
           callback,
-          loopBreaker,
+          loopBreaker
         );
       }
 
       break;
     }
-    case 'branch': {
+    case "branch": {
       for (let i = 0; i < node.branches.length; i++) {
         callback(
           node.branches[i],
@@ -55,7 +59,7 @@ function step(node, runtimeState, callback, loopBreaker) {
             parentNode: node,
             isBranchLastNode: !node.branches[i].next,
           },
-          loopBreaker.break,
+          loopBreaker.break
         );
 
         if (loopBreaker.shouldBreak) {
@@ -72,7 +76,7 @@ function step(node, runtimeState, callback, loopBreaker) {
               parentNode: node,
             },
             callback,
-            loopBreaker,
+            loopBreaker
           );
 
           if (loopBreaker.shouldBreak) {
@@ -90,13 +94,13 @@ function step(node, runtimeState, callback, loopBreaker) {
             prev: node,
           },
           callback,
-          loopBreaker,
+          loopBreaker
         );
       }
       break;
     }
 
-    case 'end': {
+    case "end": {
       callback(node, runtimeState, loopBreaker.break);
 
       if (loopBreaker.shouldBreak) {
@@ -112,7 +116,7 @@ function step(node, runtimeState, callback, loopBreaker) {
             prev: node,
           },
           callback,
-          loopBreaker,
+          loopBreaker
         );
       }
 
@@ -144,7 +148,7 @@ function forEach(startNode, callback) {
       prevNode: undefined,
     },
     callback,
-    loopBreaker,
+    loopBreaker
   );
 }
 

@@ -15,12 +15,10 @@ const StartNode = ({ data }) => {
 };
 
 StartNode.propTypes = {
-  onChangeFlowData: PropTypes.func,
   data: PropTypes.object,
 };
 
 StartNode.defaultProps = {
-  onChangeFlowData: () => undefined,
   data: {},
 };
 

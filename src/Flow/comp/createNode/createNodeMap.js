@@ -43,8 +43,7 @@ function createNodeMap(nodeType) {
           type: "2",
           condition: {
             conditionName: "",
-            conditionType: 0,
-            explicitExpression: [],
+            conditionVal: "",
             priority: 1,
           },
         },
@@ -58,8 +57,7 @@ function createNodeMap(nodeType) {
           type: "2",
           condition: {
             conditionName: "",
-            conditionType: 0,
-            explicitExpression: [],
+            conditionVal: "",
             priority: 2,
           },
         },

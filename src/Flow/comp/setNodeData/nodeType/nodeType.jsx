@@ -75,13 +75,11 @@ const NodeType = ({ data, parentNode = {} }) => {
 NodeType.propTypes = {
   data: PropTypes.object,
   parentNode: PropTypes.object,
-  addBtnType: PropTypes.string,
 };
 
 NodeType.defaultProps = {
   data: {},
   parentNode: {},
-  addBtnType: "",
 };
 
 export default React.memo(NodeType);

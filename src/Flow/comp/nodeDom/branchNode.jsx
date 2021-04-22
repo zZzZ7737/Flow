@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Tooltip } from "antd";
 import PropTypes from "prop-types";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, RightOutlined } from "@ant-design/icons";
 import Context from "../../Context";
 import NodeType from "../setNodeData/nodeType/nodeType";
 import "./style.css";
@@ -22,22 +21,13 @@ const BranchNode = ({ data, index, i, branchData, prev }) => {
 
   const {
     nodeInfo: {
-      condition: {
-        conditionName,
-        explicitExpression,
-        conditionType,
-        priority = 0,
-      },
+      condition: { conditionName, conditionVal, priority = 0 },
     },
-    next = undefined,
   } = data;
 
   let conditionShowText;
-  if (explicitExpression.length) {
-    const textString = explicitExpression.map((item) => item.name);
-    conditionShowText = `表达式：${textString.join("")}`;
-  } else if (!explicitExpression.length && conditionType === 1) {
-    conditionShowText = "其他条件";
+  if (conditionVal) {
+    conditionShowText = `表达式：${conditionVal}`;
   } else {
     conditionShowText = "请设置条件";
   }
@@ -54,7 +44,7 @@ const BranchNode = ({ data, index, i, branchData, prev }) => {
             onMouseLeave={() => {
               mouseEnter(false);
             }}
-            onClick={() => conditionDrawerChange(true)}
+            onClick={() => conditionDrawerChange(true, data, prev, branchData)}
           >
             <div
               className="conditionTitle f-clearfix"
@@ -82,37 +72,17 @@ const BranchNode = ({ data, index, i, branchData, prev }) => {
                 </em>
               )}
             </div>
-            {explicitExpression.length > 0 ? (
-              <Tooltip placement="rightTop" title={conditionShowText}>
-                <div className="conditionContent f-clearfix f-two-ellipsis">
-                  {conditionShowText}
-                  {mouseIsHover &&
-                    explicitExpression.length === 0 &&
-                    conditionType === "0" && (
-                      <i
-                        className=" f-fr"
-                        style={{ fontSize: "12px", color: "#9b9b9b" }}
-                      >
-                        <CloseOutlined />
-                      </i>
-                    )}
-                </div>
-              </Tooltip>
-            ) : (
-              <div className="conditionContent f-clearfix f-two-ellipsis">
-                {conditionShowText}
-                {mouseIsHover &&
-                  explicitExpression.length === 0 &&
-                  conditionType === "0" && (
-                    <i
-                      className="f-fr"
-                      style={{ fontSize: "12px", color: "#9b9b9b" }}
-                    >
-                      <CloseOutlined />
-                    </i>
-                  )}
-              </div>
-            )}
+            <div className="conditionContent f-clearfix f-two-ellipsis">
+              {conditionShowText}
+              {mouseIsHover && (
+                <i
+                  className="f-fr"
+                  style={{ fontSize: "12px", color: "#9b9b9b" }}
+                >
+                  <RightOutlined />
+                </i>
+              )}
+            </div>
           </div>
           <div className="nodeAddWrap">
             <NodeType
@@ -140,25 +110,19 @@ const BranchNode = ({ data, index, i, branchData, prev }) => {
 };
 
 BranchNode.propTypes = {
-  index: PropTypes.string,
   data: PropTypes.object,
-  onChangeFlowData: PropTypes.func,
-  conditionNodeDrawer: PropTypes.func,
-  prev: PropTypes.object,
-  onRemoveNode: PropTypes.func,
-  branchData: PropTypes.object,
+  index: PropTypes.string,
   i: PropTypes.number,
+  branchData: PropTypes.object,
+  prev: PropTypes.object,
 };
 
 BranchNode.defaultProps = {
-  index: "", // 0  说明该条件框的位置为第一个位置； 1说明该条件框的位置为同级条件框中的最后一个位置; 为空说明处于中间位置
   data: {},
-  onChangeFlowData: () => undefined,
-  conditionNodeDrawer: () => undefined,
-  prev: {},
-  onRemoveNode: () => undefined,
-  branchData: {},
+  index: "", // 0  说明该条件框的位置为第一个位置； 1说明该条件框的位置为同级条件框中的最后一个位置; 为空说明处于中间位置
   i: 1,
+  branchData: {},
+  prev: {},
 };
 
 export default BranchNode;

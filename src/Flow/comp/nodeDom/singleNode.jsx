@@ -1,20 +1,11 @@
 import React, { useState, useContext } from "react";
-import { Tooltip } from "antd";
 import { CloseOutlined, RightOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import Context from "../../Context";
 import NodeType from "../setNodeData/nodeType/nodeType";
 import "./style.css";
 
-const SingleNode = ({
-  singleNodeDrawer,
-  data,
-  prev,
-  parentNode,
-  // onChangeFlowData,
-  // onRemoveNode,
-  iType,
-}) => {
+const SingleNode = ({ data, prev, parentNode }) => {
   const { singleDrawerChange, onRemoveNode } = useContext(Context);
   const [mouseIsHover, setMouseIsHover] = useState(false);
 
@@ -39,7 +30,6 @@ const SingleNode = ({
   } else if (data.nodeSign === "transactor") {
     defaultText = "请选择办理人";
     defaultTitleText = "办理人";
-
     titleBg = "transactorBg";
     boxBorder = "transactorBoxBorder";
   } else if (data.nodeSign === "auditor") {
@@ -56,7 +46,7 @@ const SingleNode = ({
   return (
     <div className="nodeWrap">
       <div
-        className=" singleBox f-pr boxBorder"
+        className={`singleBox f-pr ${boxBorder}`}
         onMouseEnter={() => {
           mouseEnter(true);
         }}
@@ -115,23 +105,15 @@ const SingleNode = ({
 };
 
 SingleNode.propTypes = {
-  singleNodeDrawer: PropTypes.func,
-  onChangeFlowData: PropTypes.func,
   data: PropTypes.object,
   prev: PropTypes.object,
-  onRemoveNode: PropTypes.func,
   parentNode: PropTypes.object,
-  itemTypeStr: PropTypes.string,
 };
 
 SingleNode.defaultProps = {
-  singleNodeDrawer: () => undefined,
-  onChangeFlowData: () => undefined,
   data: {},
   prev: {},
-  onRemoveNode: () => undefined,
   parentNode: {},
-  itemTypeStr: "",
 };
 
 export default SingleNode;
